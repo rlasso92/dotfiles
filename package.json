@@ -1,0 +1,31 @@
+{
+  "name": "dotfiles",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ansi-colors": "^0.2.0",
+    "ansi-magenta": "^0.1.1",
+    "clone-deep": "^0.3.0",
+    "enquirer": "^1.0.2",
+    "fs": "0.0.1-security",
+    "mocha": "^3.4.2",
+    "prompt-checkbox": "^2.2.0",
+    "prompt-question": "^5.0.0",
+    "prompt-text": "^1.1.0",
+    "radio-symbol": "^2.0.0",
+    "shelljs": "^0.8.4",
+    "terminal-kit": "^1.45.4",
+    "util": "^0.12.3"
+  },
+  "devDependencies": {
+    "babel-core": "^7.0.0-bridge.0"
+  }
+}
