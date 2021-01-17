@@ -1,2 +1,2 @@
 #!/bin/bash
-apt install git-all -y
+wget -qO- https://aka.ms/install-artifacts-credprovider.sh | bash

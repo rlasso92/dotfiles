@@ -1,8 +1,18 @@
 const shell = require("shelljs");
 
 let appsAr = [];
-function PreChecks() {
-  shell.exec("./config/init.sh");
+function PreChecks(os) {
+  if (os === "L") {
+    shell.exec("./config/init.sh");
+  }
+  if (os === "W") {
+    shell.exec("powershell.exe Set-ExecutionPolicy RemoteSigned");
+    shell.exec("powershell.exe .\\config\\init.ps1");
+  }
+  if (os === "M") {
+    console.log("here mac apps");
+  }
+
 }
 
 function InstallApps(op, os) {
@@ -15,7 +25,9 @@ function InstallApps(op, os) {
     });
   }
   if (os === "W") {
-    console.log("here windows apps");
+    appsAr.forEach((element) => {
+      shell.exec("powershell.exe .\\apps\\" + element + "\\window\\init.ps1");
+    });
   }
   if (os === "M") {
     console.log("here mac apps");

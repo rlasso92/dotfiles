@@ -1,18 +1,36 @@
 const shell = require("shelljs");
 var Prompt = require("prompt-checkbox");
 var Enquirer = require("enquirer");
-var util = require("util");
 var enquirer = new Enquirer();
 enquirer.register("checkbox", require("prompt-checkbox"));
 var instalation = require("./instalation.js");
 var osType = "";
+var osName = "";
 var appdir = ["default"];
-var dfiles = new Array();
+var getos = require('getos')
 
-shell.exec("./tittle.sh");
+getos(function (e, os) {
+  if (e) return console.log(e)
+  osName = JSON.stringify(os);
+})
+
+if (osName.includes("win")) {
+  shell.exec("powershell.exe Get-Content -Path .\\printtittle");
+  osType = "W";
+}
+if (osName.includes("linux")) {
+  shell.exec("./tittle.sh");
+  osType = "L";
+}
+if (osName.includes("mac")) {
+  osType = "M";
+
+}
+
 var prompt = new Prompt({
   name: "os",
   message: "Choise an OS System",
+  default: (osType) === "W" ? "Window" : (osType === "L") ? "Linux" : (osType === "M") ? "MacOs" : "",
   radio: true,
   choices: ["Window", "Linux", "MacOs"],
 });
@@ -28,27 +46,33 @@ prompt
 
 function MenuOs(o) {
   if (o.includes("Window")) {
-    osType = "W";
-    CleanUp();
+    CleanUp(o);
     MenuApps();
   }
   if (o.includes("Linux")) {
-    osType = "L";
-    CleanUp();
+    CleanUp(o);
     MenuApps();
   }
   if (o.includes("MacOs")) {
-    osType = "M";
-    CleanUp();
+    CleanUp(o);
     MenuApps();
   }
 }
 
-function CleanUp() {
-  shell.exec("clear");
-  shell.exec("./tittle.sh");
-}
+function CleanUp(o) {
+  if (o.includes("Window")) {
+    shell.exec("powershell.exe clear");
+    shell.exec("powershell.exe Get-Content -Path .\\printtittle");
+  }
+  if (o.includes("Linux")) {
+    shell.exec("clear");
+    shell.exec("./tittle.sh");
+  }
+  if (o.includes("MacOs")) {
 
+  }
+
+}
 function GetAppList() {
   const dirs = "./apps/";
   const fs = require("fs");
@@ -59,6 +83,7 @@ function GetAppList() {
 function FillDir(e) {
   appdir = [...e];
 }
+
 function MenuApps() {
   GetAppList();
   var questions = [
@@ -70,7 +95,7 @@ function MenuApps() {
     },
   ];
   enquirer.prompt(questions).then(function (answers) {
-    instalation.PreChecks();
+    instalation.PreChecks(osType);
     instalation.InstallApps(answers, osType);
   });
 }
